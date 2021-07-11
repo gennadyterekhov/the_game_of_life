@@ -1,0 +1,24 @@
+.pad-top {
+    margin-top: 5em;
+}
+
+.main-input {
+    font-size: 2em;
+}
+
+.container {
+    margin-bottom: 3em;
+}
+
+div {
+    margin-bottom: 1em;
+}
+
+h2 {
+    margin-bottom: 2em;
+}
+
+.start-btn {
+    background-color: rgb(163, 248, 227);
+    font-size: 5em;
+}
