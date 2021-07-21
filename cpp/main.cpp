@@ -106,7 +106,6 @@ int main() {
     std::cout << "Game start.\n";
     srand(time(NULL));
 
-
     const int width = 10;
     const int height = 10;
     const int timeout = 200;
