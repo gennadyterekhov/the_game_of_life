@@ -1,25 +1,19 @@
 #include <iostream>
 #include <string>
-#include <vector>
-#include <algorithm>
-#include <fstream>
 #include <cstdlib>
 #include <ctime>
 #include <thread>
 #include <chrono>
 
-// debug
-#include <typeinfo>
-
-
 class Field {
     public:
-        Field(int width, int height) {
+        Field(int width, int height, int timeout = 200) {
             this->width = width;
             this->height = height;
             this->aliveStr = "■ ";
             this->deadStr = "□ ";
             this->points = this->generatePoints();
+            this->timeout = timeout;
         }
 
 
@@ -29,7 +23,7 @@ class Field {
                 std::cout << "\n    ITERATION " << i << std::endl;
                 this->show();
                 this->points = this->getMutatedPoints();
-                std::this_thread::sleep_for(std::chrono::milliseconds(200));
+                std::this_thread::sleep_for(std::chrono::milliseconds(this->timeout));
             }
         }    
 
@@ -37,12 +31,10 @@ class Field {
     private:
         int width;
         int height;
+        int timeout;
+        bool** points;
         std::string aliveStr;
         std::string deadStr;
-        char aliveChar;
-        char deadChar;
-        char space;
-        bool** points;
 
 
         std::string pointToString(bool point) {
@@ -111,18 +103,18 @@ class Field {
 
 
 int main() {
-    std::cout << "==start\n";
+    std::cout << "Game start.\n";
     srand(time(NULL));
 
 
     const int width = 10;
     const int height = 10;
-    
-    Field gameField = Field(width, height);
+    const int timeout = 200;
+
+    Field gameField = Field(width, height, timeout);
 
     gameField.play();
 
-	std::cout << "==end\n";
-    std::cout << std::endl;
+	std::cout << "Game over.\n";
     return 0;
 }
