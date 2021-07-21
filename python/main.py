@@ -1,5 +1,7 @@
 import json
 from the_game_of_life import Field
+
+
 if __name__ == "__main__":
     print('Game start.\n')
 

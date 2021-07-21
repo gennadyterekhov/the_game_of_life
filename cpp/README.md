@@ -1,5 +1,11 @@
-# the game of life
+# C++
 
-g++ main.cpp -o main.exe
+C++ implementation  
 
-g++ main.cpp -o main.exe && ./main.exe
+## how to run
+
+compile into `main.exe`:  
+`g++ main.cpp -o main.exe`
+
+compile into `main.exe` and run:  
+`g++ main.cpp -o main.exe && ./main.exe`
