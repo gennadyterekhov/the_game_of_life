@@ -7,5 +7,9 @@ C++ implementation
 compile into `main.exe`:  
 `g++ main.cpp -o main.exe`
 
-compile into `main.exe` and run:  
+run:  
+`./main.exe`
+  
+  
+or the same in one line:  
 `g++ main.cpp -o main.exe && ./main.exe`

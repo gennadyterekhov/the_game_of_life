@@ -5,9 +5,10 @@
 #include <thread>
 #include <chrono>
 
+
 class Field {
     public:
-        Field(int width, int height, int timeout = 200) {
+        Field(int width, int height, int timeout) {
             this->width = width;
             this->height = height;
             this->aliveStr = "■ ";
@@ -102,13 +103,23 @@ class Field {
 };
 
 
-int main() {
+int main(int argc, char** argv) {
+    const short VALID_PARAMETERS_LENGTH = 4;
+    char* trash;
+    int width = 10;
+    int height = 10;
+    int timeout = 200;
+
     std::cout << "Game start.\n";
     srand(time(NULL));
 
-    const int width = 10;
-    const int height = 10;
-    const int timeout = 200;
+    if (argc < VALID_PARAMETERS_LENGTH) {
+        std::cout << "No parameters supplied. Running with default configuration.\n";
+    } else {
+        width = std::strtol(argv[1], &trash, 10);
+        height = std::strtol(argv[2], &trash, 10);
+        timeout = std::strtol(argv[3], &trash, 10);
+    }
 
     Field gameField = Field(width, height, timeout);
 
