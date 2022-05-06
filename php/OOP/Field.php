@@ -85,7 +85,6 @@ class Field
     {
         foreach ($this->points as $line) {
             foreach ($line as $point) {
-                // echo $point;
                 echo $point->toString($config);
             }
             echo PHP_EOL;
