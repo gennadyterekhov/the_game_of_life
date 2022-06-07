@@ -4,7 +4,6 @@
 #include <ctime>
 #include <thread>
 #include <chrono>
-#include <stdexcept>
 
 
 class Field {
@@ -18,6 +17,14 @@ class Field {
             this->initializePoints();
         }
 
+        ~Field() {
+            delete &this->width;
+            delete &this->height;
+            delete &this->timeout;
+            delete &this->aliveStr;
+            delete &this->deadStr;
+            this->uninitializePoints();
+        }
 
         void play() {
             for (int i = 0;; i++) {
@@ -35,11 +42,11 @@ class Field {
         int timeout;
         bool** previousPoints;
         bool** points;
-        std::string aliveStr;
-        std::string deadStr;
+        const char* aliveStr;
+        const char* deadStr;
 
 
-        std::string pointToString(bool point) {
+        const char* pointToCharPtr(bool point) {
             return (point) ? this->aliveStr : this->deadStr;
         }
 
@@ -47,7 +54,7 @@ class Field {
         void show() {
             for (int i = 0; i < this->height; i++) {
                 for (int j = 0; j < this->width; j++) {
-                    std::cout << this->pointToString(this->points[i][j]);
+                    std::cout << this->pointToCharPtr(this->points[i][j]);
                 }
                 std::cout << std::endl;
             }
@@ -91,6 +98,14 @@ class Field {
         }
 
 
+        void uninitializePoints() {
+            for (int i = 0; i < this->height; i++) {
+                delete[] this->points[i];
+                delete[] this->previousPoints[i];           
+            }
+        }
+
+
         void initializePoints(bool value = false) {
             this->points = new bool* [height];
             this->previousPoints = new bool* [height];
@@ -111,16 +126,6 @@ class Field {
 
 };
 
-void checkArgsArePositiveAndNotZero(int width, int height, int timeout )
-{
-    if (
-        (width <= 0) ||
-        (height <= 0) ||
-        (timeout <= 0)
-    ) {
-        throw std::invalid_argument("Received negative-or-zero value. Arguments must be higher than 0.");
-    }
-}
 
 int main(int argc, char** argv) {
     const short VALID_PARAMETERS_LENGTH = 4;
@@ -140,7 +145,15 @@ int main(int argc, char** argv) {
         timeout = std::strtol(argv[3], nullptr, BASE);
     }
 
-    checkArgsArePositiveAndNotZero(width, height, timeout);
+    if (
+        (width <= 0) ||
+        (height <= 0) ||
+        (timeout <= 0)
+    ) {
+        std::cout << "Received negative-or-zero value. Arguments must be higher than 0.\n";
+        return 1;
+    }
+
 
     Field gameField = Field(width, height, timeout);
 
