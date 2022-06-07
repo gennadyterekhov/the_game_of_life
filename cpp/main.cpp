@@ -4,6 +4,7 @@
 #include <ctime>
 #include <thread>
 #include <chrono>
+#include <stdexcept>
 
 
 class Field {
@@ -11,19 +12,18 @@ class Field {
         Field(int width, int height, int timeout) {
             this->width = width;
             this->height = height;
+            this->timeout = timeout;
             this->aliveStr = "■ ";
             this->deadStr = "□ ";
-            this->points = this->generatePoints();
-            this->timeout = timeout;
+            this->initializePoints();
         }
 
 
         void play() {
-            bool continueCondition = true;
-            for (int i = 0; continueCondition; i++) {
+            for (int i = 0;; i++) {
                 std::cout << "\n    ITERATION " << i << std::endl;
                 this->show();
-                this->points = this->getMutatedPoints();
+                this->updatePoints();
                 std::this_thread::sleep_for(std::chrono::milliseconds(this->timeout));
             }
         }    
@@ -33,6 +33,7 @@ class Field {
         int width;
         int height;
         int timeout;
+        bool** previousPoints;
         bool** points;
         std::string aliveStr;
         std::string deadStr;
@@ -53,16 +54,17 @@ class Field {
         }
         
 
-        bool** getMutatedPoints() {
-            bool** mutatedPoints;
-            mutatedPoints = new bool* [this->height];
+        void updatePoints() {
             for (int i = 0; i < this->height; i++) {
-                mutatedPoints[i] = new bool [this->width];
                 for (int j = 0; j < this->width; j++) {
-                    mutatedPoints[i][j] = this->getMutatedPoint(j, i);
+                    this->points[i][j] = this->getMutatedPoint(j, i);
                 }
             }
-            return mutatedPoints;
+            for (int i = 0; i < this->height; i++) {
+                for (int j = 0; j < this->width; j++) {
+                    this->previousPoints[i][j] = this->points[i][j];
+                }
+            }
         }
 
 
@@ -81,7 +83,7 @@ class Field {
                         i >= 0 && j >= 0
                         && (i != y || j != x)
                     ) {
-                        aliveCount += int(this->points[i][j]);
+                        aliveCount += int(this->previousPoints[i][j]);
                     }
                 }
             }
@@ -89,23 +91,40 @@ class Field {
         }
 
 
-        bool** generatePoints() {
-            bool** points;
-            points = new bool* [height];
+        void initializePoints(bool value = false) {
+            this->points = new bool* [height];
+            this->previousPoints = new bool* [height];
+
             for (int i = 0; i < this->height; i++) {
-                points[i] = new bool [width];
+
+                this->points[i] = new bool [width];
+                this->previousPoints[i] = new bool [width];
+
                 for (int j = 0; j < this->width; j++) {
-                    points[i][j] = bool(rand() % 2);
+
+                    bool temp = bool(rand() % 2); 
+                    this->points[i][j] = temp;
+                    this->previousPoints[i][j] = temp;
                 }            
             }
-            return points;
         }
+
 };
 
+void checkArgsArePositiveAndNotZero(int width, int height, int timeout )
+{
+    if (
+        (width <= 0) ||
+        (height <= 0) ||
+        (timeout <= 0)
+    ) {
+        throw std::invalid_argument("Received negative-or-zero value. Arguments must be higher than 0.");
+    }
+}
 
 int main(int argc, char** argv) {
     const short VALID_PARAMETERS_LENGTH = 4;
-    char* trash;
+    const short BASE = 10;
     int width = 10;
     int height = 10;
     int timeout = 200;
@@ -116,15 +135,20 @@ int main(int argc, char** argv) {
     if (argc < VALID_PARAMETERS_LENGTH) {
         std::cout << "No parameters supplied. Running with default configuration.\n";
     } else {
-        width = std::strtol(argv[1], &trash, 10);
-        height = std::strtol(argv[2], &trash, 10);
-        timeout = std::strtol(argv[3], &trash, 10);
+        width = std::strtol(argv[1], nullptr, BASE);
+        height = std::strtol(argv[2], nullptr, BASE);
+        timeout = std::strtol(argv[3], nullptr, BASE);
     }
+
+    checkArgsArePositiveAndNotZero(width, height, timeout);
 
     Field gameField = Field(width, height, timeout);
 
     gameField.play();
 
+    delete &gameField;
+    
 	std::cout << "Game over.\n";
     return 0;
 }
+
