@@ -4,6 +4,19 @@
 #include <unistd.h>
 
 
+
+// struct Field {
+
+//     const int width = 10;
+//     const int height = 10;
+//     int timeout = 200;
+//     char** previousPoints[10][10];
+//     char** points[10][10]; 
+//     char aliveStr[] = "■ ";
+//     char deadStr[] = "□ ";
+// }
+
+
 const int width = 10;
 const int height = 10;
 int timeout = 200;
@@ -84,12 +97,7 @@ int main(int argc, char** argv) {
 
 
     for (int i = 0; i < height; ++i) {
-
-        // points[i] = new bool [width];
-        // previousPoints[i] = new bool [width];
-
         for (int j = 0; j < width; j++) {
-
             char temp = (char)(rand() % 2); 
             points[i][j] = temp;
             previousPoints[i][j] = temp;
@@ -99,8 +107,7 @@ int main(int argc, char** argv) {
 
     for (int i = 0;; ++i) {
         printf("\n    ITERATION %i\n", i);
-        // show();
-        // show
+
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 if (points[i][j]) {
@@ -111,7 +118,7 @@ int main(int argc, char** argv) {
             }
             printf("\n");
         }
-        // \show
+
 
         updatePoints();
         usleep(200 * 1000);
