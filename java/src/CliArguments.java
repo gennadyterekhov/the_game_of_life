@@ -5,6 +5,7 @@ public class CliArguments {
     public String width;
     public String aliveStr;
     public String deadStr;
+    public String timeout;
 
     public void addArgument(String name, String value) {
         if (name == "height") {
@@ -18,6 +19,9 @@ public class CliArguments {
         }
         if (name == "deadStr") {
             this.deadStr = value;
+        }
+        if (name == "timeout") {
+            this.timeout = value;
         }
     }
 }

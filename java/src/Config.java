@@ -19,5 +19,8 @@ public class Config {
         if (cliArguments.deadStr != null) {
             this.deadStr = cliArguments.deadStr;
         }
+        if (cliArguments.timeout != null) {
+            this.timeout = Integer.parseInt(cliArguments.timeout);
+        }
     }
 }

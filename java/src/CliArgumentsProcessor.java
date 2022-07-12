@@ -6,13 +6,16 @@ public class CliArgumentsProcessor {
     private static final String WIDTH_OPTION = "--width=";
     private static final String ALIVE_STR_OPTION = "--alive-str=";
     private static final String DEAD_STR_OPTION = "--dead-str=";
+    private static final String TIMEOUT_OPTION = "--timeout=";
+
 
     private static final HashMap<String, String> OPTIONS_TO_FIELDS_MAP = new HashMap<String, String>(
         Map.of(
             CliArgumentsProcessor.HEIGHT_OPTION, "height",
             CliArgumentsProcessor.WIDTH_OPTION, "width",
             CliArgumentsProcessor.ALIVE_STR_OPTION, "aliveStr",
-            CliArgumentsProcessor.DEAD_STR_OPTION, "deadStr"
+            CliArgumentsProcessor.DEAD_STR_OPTION, "deadStr",
+            CliArgumentsProcessor.TIMEOUT_OPTION, "timeout"
         )
     );
 
@@ -51,6 +54,9 @@ public class CliArgumentsProcessor {
         }
         if (arg.indexOf(CliArgumentsProcessor.DEAD_STR_OPTION) == 0) {
             return CliArgumentsProcessor.DEAD_STR_OPTION;
+        }
+        if (arg.indexOf(CliArgumentsProcessor.TIMEOUT_OPTION) == 0) {
+            return CliArgumentsProcessor.TIMEOUT_OPTION;
         }
         return null;
     }
