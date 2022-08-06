@@ -99,6 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
           children: <Widget>[
             Text(
               _gameFieldString,
+              style: const TextStyle(fontFamily: 'Noto Sans Mono'),
             ),
           ],
         ),

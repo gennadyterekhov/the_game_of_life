@@ -22,8 +22,8 @@ Config initiliazeConfig() {
 Config initializeDefaultConfig() {
   int height = 30;
   int width = 60;
-  String aliveStr = '+ ';
-  String deadStr = ' ';
+  String aliveStr = '■ ';
+  String deadStr = '□ ';
   int timeout = 100;
   return Config(height, width, aliveStr, deadStr, timeout);
 }
