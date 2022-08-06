@@ -1,5 +1,5 @@
 import 'config.dart';
-import 'dart:io';
+// import 'dart:io';
 import 'game_field.dart';
 import 'dart:developer';
 
@@ -22,7 +22,7 @@ class Game {
       this.gameField.printGeneration();
       this.gameField.updateGeneration();
 
-      sleep(Duration(milliseconds: this.config.timeout));
+      // sleep(Duration(milliseconds: this.config.timeout));
 
       iteration += 1;
     }
@@ -33,6 +33,7 @@ Game initizlizeGame() {
   Config config = initiliazeConfig();
 
   Game game = Game(config: config);
+  game.gameField.initialize();
 
   return game;
 }

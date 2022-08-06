@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'dart:developer';
+import 'game.dart';
 
 const title = 'The Game of Life';
+Game game = initizlizeGame();
 void main() {
   runApp(const MyApp());
 }
@@ -47,9 +49,8 @@ class _MyHomePageState extends State<MyHomePage> {
     log('inside _incrementCounter');
     log(_gameFieldString);
 
-
-    String newGameFieldString = '';
-
+    String newGameFieldString = game.gameField.getGenerationString();
+    game.gameField.updateGeneration();
 
     setState(() {
       // This call to setState tells the Flutter framework that something has
@@ -95,7 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
           // axis because Columns are vertical (the cross axis would be
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
-          children:  <Widget>[
+          children: <Widget>[
             Text(
               _gameFieldString,
             ),
