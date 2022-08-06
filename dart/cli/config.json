@@ -1,0 +1,7 @@
+{
+    "timeout": 400,
+    "height": 30,
+    "width": 80,
+    "alive": "■ ",
+    "dead": "  "
+}
