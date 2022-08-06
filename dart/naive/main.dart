@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'dart:io';
+import 'dart:convert';
 
 void main(List<String> args) {
   const height = 10;
@@ -10,15 +11,9 @@ void main(List<String> args) {
 
   print('The Game Of Life.');
 
-  // Config config = Config(
-  //   height: height,
-  //   width: width,
-  //   aliveStr: aliveStr,
-  //   deadStr: deadStr,
-  //   timeout: timeout,
-  // );
+  Config config = initiliazeConfig();
 
-  Config config = Config();
+  // Config config = Config();
   // Game game = Game(config: config);
 
   // game.play();
@@ -29,16 +24,72 @@ void main(List<String> args) {
   print('Game Over.');
 }
 
+Config initiliazeConfig() {
+  int height = 30;
+  int width = 60;
+  String aliveStr = '■ ';
+  String deadStr = '□ ';
+  int timeout = 100;
+
+  String configJsonString = File('config.json').readAsStringSync();
+
+  // const configJsonString = '{"name": "John Smith","email": "john@example.com"}';
+  Map<String, dynamic> configMap = jsonDecode(configJsonString);
+
+  configMap.containsKey('heigth');
+
+  if (configMap.containsKey('height') && configMap['height'] is int) {
+    height = configMap['height'];
+  }
+
+  if (configMap.containsKey('width') && configMap['width'] is int) {
+    width = configMap['width'];
+  }
+
+  if (configMap.containsKey('alive') && configMap['alive'] is String) {
+    aliveStr = configMap['alive'];
+  }
+
+  if (configMap.containsKey('dead') && configMap['dead'] is String) {
+    deadStr = configMap['dead'];
+  }
+
+  if (configMap.containsKey('timeout') && configMap['timeout'] is int) {
+    timeout = configMap['timeout'];
+  }
+
+  return Config(height, width, aliveStr, deadStr, timeout);
+}
+
 class Config {
-  final int height = 30;
-  final int width = 60;
-  final String aliveStr = '■ ';
-  final String deadStr = '□ ';
-  final int timeout = 100;
+  // final int height = 30;
+  // final int width = 60;
+  // final String aliveStr = '■ ';
+  // final String deadStr = '□ ';
+  // final int timeout = 100;
 
-            // this->aliveStr = "■ ";
-            // this->deadStr = "□ ";
+  // late final int height = 30;
+  // late final int width = 60;
+  // late final String aliveStr = '■ ';
+  // late final String deadStr = '□ ';
+  // late final int timeout = 100;
 
+  late int height;
+  late int width;
+  late String aliveStr;
+  late String deadStr;
+  late int timeout;
+
+  Config(int height, int width, String aliveStr, String deadStr, int timeout) {
+    this.height = height;
+    this.width = width;
+    this.aliveStr = aliveStr;
+    this.deadStr = deadStr;
+    this.timeout = timeout;
+  }
+
+  // this->aliveStr = "■ ";
+  // this->deadStr = "□ ";
 
   // Config({height, width, aliveStr, deadStr, timeout}) {
   //   this.height = height;
