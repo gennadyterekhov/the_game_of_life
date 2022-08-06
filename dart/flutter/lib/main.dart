@@ -104,10 +104,77 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
+      bottomNavigationBar: _DemoBottomAppBar(
+        shape: null,
+        fabLocation: FloatingActionButtonLocation.endDocked,
+        // shape: const CircularNotchedRectangle(),
+        // child: Container(height: 50.0),
+        // children: <Widget>[],
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
-        child: const Icon(Icons.add),
+        child: const Icon(Icons.arrow_forward),
+      ),
+    );
+  }
+}
+
+class _DemoBottomAppBar extends StatelessWidget {
+  const _DemoBottomAppBar({
+    this.fabLocation = FloatingActionButtonLocation.endDocked,
+    this.shape = const CircularNotchedRectangle(),
+  });
+
+  final FloatingActionButtonLocation fabLocation;
+  final NotchedShape? shape;
+
+  void _onMenuPressed() {
+    log('menu pressed');
+  }
+
+  void _onNextGenerationPressed() {
+    log('_onNextGenerationPressed');
+  }
+
+  void _onPausePressed() {
+    log('_onPausePressed');
+  }
+
+  static final List<FloatingActionButtonLocation> centerLocations =
+      <FloatingActionButtonLocation>[
+    FloatingActionButtonLocation.centerDocked,
+    FloatingActionButtonLocation.centerFloat,
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return BottomAppBar(
+      shape: null,
+      color: Colors.blue,
+      child: IconTheme(
+        data: IconThemeData(color: Theme.of(context).colorScheme.onPrimary),
+        child: Row(
+          children: <Widget>[
+            IconButton(
+              tooltip: 'Open navigation menu',
+              icon: const Icon(Icons.menu),
+              onPressed: _onMenuPressed,
+            ),
+            const Spacer(),
+            IconButton(
+              tooltip: 'Pause',
+              icon: const Icon(Icons.pause),
+              onPressed: _onPausePressed,
+            ),
+            const Spacer(),
+            IconButton(
+              tooltip: 'Next Generation',
+              icon: const Icon(Icons.arrow_forward),
+              onPressed: _onNextGenerationPressed,
+            ),
+          ],
+        ),
       ),
     );
   }
