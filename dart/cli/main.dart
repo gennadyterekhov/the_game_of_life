@@ -3,6 +3,15 @@ import 'dart:io';
 import 'dart:convert';
 
 void main(List<String> args) {
+  try {
+    theGameOfLife();
+  } catch (exception) {
+      print('An error orurred. Message: $exception');
+  }
+}
+
+
+void theGameOfLife() {
   print('The Game Of Life.');
 
   Config config = initiliazeConfig();

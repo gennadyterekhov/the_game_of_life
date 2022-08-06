@@ -1,7 +1,7 @@
 {
     "timeout": 400,
-    "height": 20,
+    "height": 30,
     "width": 80,
     "alive": "■ ",
-    "dead": "□ "
+    "dead": "  "
 }
