@@ -3,77 +3,91 @@ import 'dart:io';
 import 'dart:convert';
 
 void main(List<String> args) {
-  const height = 10;
-  const width = 10;
-  const aliveStr = '+';
-  const deadStr = '-';
-  const timeout = 100;
-
   print('The Game Of Life.');
 
   Config config = initiliazeConfig();
 
-  // Config config = Config();
-  // Game game = Game(config: config);
+  Game game = Game(config: config);
 
-  // game.play();
-
-  GameField gameField = GameField(config: config);
-  gameField.play();
+  game.play();
 
   print('Game Over.');
 }
 
 Config initiliazeConfig() {
-  int height = 30;
-  int width = 60;
-  String aliveStr = '■ ';
-  String deadStr = '□ ';
-  int timeout = 100;
+  print('Trying to read config from config.json');
 
-  String configJsonString = File('config.json').readAsStringSync();
+  File configFile = File('config.json');
 
-  // const configJsonString = '{"name": "John Smith","email": "john@example.com"}';
+  if (configFile.existsSync()) {
+    return initializeConfigFromFile(configFile);
+  } else {
+    print('File config.json not found');
+
+    return initializeDefaultConfig();
+  }
+}
+
+Config initializeConfigFromFile(File configFile) {
+  late int height;
+  late int width;
+  late String aliveStr;
+  late String deadStr;
+  late int timeout;
+
+  String configJsonString = configFile.readAsStringSync();
+
   Map<String, dynamic> configMap = jsonDecode(configJsonString);
 
   configMap.containsKey('heigth');
 
   if (configMap.containsKey('height') && configMap['height'] is int) {
     height = configMap['height'];
+  } else {
+    throwConfigError('height', 'int');
   }
 
   if (configMap.containsKey('width') && configMap['width'] is int) {
     width = configMap['width'];
+  } else {
+    throwConfigError('width', 'int');
   }
 
   if (configMap.containsKey('alive') && configMap['alive'] is String) {
     aliveStr = configMap['alive'];
+  } else {
+    throwConfigError('alive', 'String');
   }
 
   if (configMap.containsKey('dead') && configMap['dead'] is String) {
     deadStr = configMap['dead'];
+  } else {
+    throwConfigError('dead', 'String');
   }
 
   if (configMap.containsKey('timeout') && configMap['timeout'] is int) {
     timeout = configMap['timeout'];
+  } else {
+    throwConfigError('timeout', 'int');
   }
+  return Config(height, width, aliveStr, deadStr, timeout);
+}
 
+void throwConfigError(String fieldName, String type) {
+  throw Exception(
+      'field $fieldName not found or of incompatible type. Type $type expected.');
+}
+
+Config initializeDefaultConfig() {
+  int height = 30;
+  int width = 60;
+  String aliveStr = '■ ';
+  String deadStr = '□ ';
+  int timeout = 100;
   return Config(height, width, aliveStr, deadStr, timeout);
 }
 
 class Config {
-  // final int height = 30;
-  // final int width = 60;
-  // final String aliveStr = '■ ';
-  // final String deadStr = '□ ';
-  // final int timeout = 100;
-
-  // late final int height = 30;
-  // late final int width = 60;
-  // late final String aliveStr = '■ ';
-  // late final String deadStr = '□ ';
-  // late final int timeout = 100;
-
   late int height;
   late int width;
   late String aliveStr;
@@ -87,17 +101,6 @@ class Config {
     this.deadStr = deadStr;
     this.timeout = timeout;
   }
-
-  // this->aliveStr = "■ ";
-  // this->deadStr = "□ ";
-
-  // Config({height, width, aliveStr, deadStr, timeout}) {
-  //   this.height = height;
-  //   this.width = width;
-  //   this.aliveStr = aliveStr;
-  //   this.deadStr = deadStr;
-  //   this.timeout = timeout;
-  // }
 }
 
 class GameField {
@@ -113,8 +116,6 @@ class GameField {
   void printPoint(int x, int y) {
     String point = this.boolToString(this.previousGeneration[y][x]);
     stdout.write(point);
-
-    // print(point);
   }
 
   String boolToString(bool point) {
@@ -126,10 +127,6 @@ class GameField {
 
   void initialize() {
     final randomNumberGenerator = Random();
-    // this.currentGeneration = List<List<bool>>.filled(
-    //     this.config.height, List<bool>.filled(this.config.width, false));
-    // this.previousGeneration = List<List<bool>>.filled(
-    //     this.config.height, List<bool>.filled(this.config.width, false));
 
     this.currentGeneration =
         List<List<bool>>.filled(this.config.height, List<bool>.empty());
@@ -154,7 +151,6 @@ class GameField {
       for (int j = 0; j < this.config.width; ++j) {
         this.printPoint(j, i);
       }
-      // print('\n');
       stdout.write('\n');
     }
   }
@@ -192,16 +188,26 @@ class GameField {
     }
     return aliveCount;
   }
+}
+
+class Game {
+  late final Config config;
+  late GameField gameField;
+
+  Game({config: Config}) {
+    this.config = config;
+    this.gameField = GameField(config: config);
+  }
 
   void play() {
-    this.initialize();
+    this.gameField.initialize();
 
     int iteration = 0;
     while (true) {
       print('iteration $iteration');
 
-      this.printGeneration();
-      this.updateGeneration();
+      this.gameField.printGeneration();
+      this.gameField.updateGeneration();
 
       sleep(Duration(milliseconds: this.config.timeout));
 
@@ -209,29 +215,3 @@ class GameField {
     }
   }
 }
-
-// class Game {
-//   late final Config config;
-//   late GameField gameField;
-
-//   Game({config: Config}) {
-//     this.config = config;
-//     this.gameField = GameField(config: config);
-//   }
-
-//   void play() {
-//     this.gameField.initialize();
-
-//     int iteration = 0;
-//     while (true) {
-//       print(iteration);
-
-//       this.gameField.printGeneration();
-//       this.gameField.updateGeneration();
-
-//       sleep(Duration(milliseconds: this.config.timeout));
-
-//       iteration += 1;
-//     }
-//   }
-// }
