@@ -3,14 +3,12 @@ import 'dart:math';
 // import 'dart:io';
 
 class GameField {
-  late final Config config;
+  final Config config;
 
   List currentGeneration = [];
   List previousGeneration = [];
 
-  GameField({config: Config}) {
-    this.config = config;
-  }
+  GameField({required this.config});
 
   void printPoint(int x, int y) {
     String point = this.boolToString(this.previousGeneration[y][x]);

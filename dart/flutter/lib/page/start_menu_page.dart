@@ -16,10 +16,7 @@ class _StartMenuPageState extends State<StartMenuPage> {
   void onStartGameBtnPressed() {
     log('inside onStartGameBtnPressed');
 
-    Game game = initizlizeGame();
-
-    log('im still in _StartMenuPageState, here I must have access to game');
-    log(game.gameField.getGenerationString());
+    Game game = initializeGame();
 
     openGamePage(game);
   }
@@ -37,6 +34,7 @@ class _StartMenuPageState extends State<StartMenuPage> {
 
   @override
   Widget build(BuildContext context) {
+    // TODO - add config
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),

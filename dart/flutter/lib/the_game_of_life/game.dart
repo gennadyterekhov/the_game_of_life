@@ -4,11 +4,10 @@ import 'game_field.dart';
 import 'dart:developer';
 
 class Game {
-  late final Config config;
+  final Config config;
   late GameField gameField;
 
-  Game({config: Config}) {
-    this.config = config;
+  Game({required this.config}) {
     this.gameField = GameField(config: config);
   }
 
@@ -29,7 +28,7 @@ class Game {
   }
 }
 
-Game initizlizeGame() {
+Game initializeGame() {
   Config config = initiliazeConfig();
 
   Game game = Game(config: config);

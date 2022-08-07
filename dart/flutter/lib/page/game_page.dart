@@ -16,9 +16,6 @@ class GamePage extends StatefulWidget {
 
 class _GamePageState extends State<GamePage> {
   String generationString = '';
-  void _incrementCounter() {
-    log('inside _incrementCounter');
-  }
 
   @override
   void initState() {
@@ -55,11 +52,6 @@ class _GamePageState extends State<GamePage> {
       bottomNavigationBar: MyBottomAppBar(
         game: widget.game,
         updateGamePageCallback: updateGamePageCallback,
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.arrow_forward),
       ),
     );
   }
