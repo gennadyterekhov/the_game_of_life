@@ -62,7 +62,6 @@ class GameField {
     return gen;
   }
 
-
   void updateGeneration() {
     for (int i = 0; i < this.config.height; ++i) {
       for (int j = 0; j < this.config.width; ++j) {
