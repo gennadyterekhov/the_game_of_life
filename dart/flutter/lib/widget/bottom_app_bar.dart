@@ -77,6 +77,13 @@ class MyBottomAppBarState extends State<MyBottomAppBar> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    nextGenerationSleepTimer.cancel();
+
+    super.dispose();
+  }
+
   void onTimer(timer) {
     if (!isPaused) {
       updateGeneration();

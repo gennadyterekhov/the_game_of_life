@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:the_game_of_life/page/game_page.dart';
 import 'dart:developer';
 import '../the_game_of_life/game.dart';
+import '../the_game_of_life/config.dart';
+import 'dart:convert';
 
 class StartMenuPage extends StatefulWidget {
   const StartMenuPage({Key? key, required this.title}) : super(key: key);
@@ -13,10 +15,55 @@ class StartMenuPage extends StatefulWidget {
 }
 
 class _StartMenuPageState extends State<StartMenuPage> {
+  late TextEditingController _heightInputController;
+  late TextEditingController _widthInputController;
+  late TextEditingController _aliveStrInputController;
+  late TextEditingController _deadStrInputController;
+  late TextEditingController _timeoutInputController;
+
+  @override
+  void initState() {
+    super.initState();
+    // здесь нужно как-то взять дефолты в зависимости от устройства
+    _heightInputController = TextEditingController(text: '30');
+    _widthInputController = TextEditingController(text: '30');
+    _aliveStrInputController = TextEditingController(text: '+ ');
+    _deadStrInputController = TextEditingController(text: '- ');
+    _timeoutInputController = TextEditingController(text: '400');
+  }
+
+  @override
+  void dispose() {
+    _heightInputController.dispose();
+    _widthInputController.dispose();
+    _aliveStrInputController.dispose();
+    _deadStrInputController.dispose();
+    _timeoutInputController.dispose();
+
+    super.dispose();
+  }
+
   void onStartGameBtnPressed() {
     log('inside onStartGameBtnPressed');
+    var data = [
+      _heightInputController.value,
+      _widthInputController.value,
+      _aliveStrInputController.value,
+      _deadStrInputController.value,
+      _timeoutInputController.value,
+    ];
+    log('$data');
 
-    Game game = initializeGame();
+    // Game game = initializeGame();
+    Config config = Config(
+      height: int.parse(_heightInputController.text),
+      width: int.parse(_widthInputController.text),
+      aliveStr: (_aliveStrInputController.text),
+      deadStr: (_deadStrInputController.text),
+      timeout: int.parse(_timeoutInputController.text),
+    );
+    Game game = Game(config: config);
+    game.gameField.initialize();
 
     openGamePage(game);
   }
@@ -40,13 +87,89 @@ class _StartMenuPageState extends State<StartMenuPage> {
         title: Text(widget.title),
       ),
       body: Center(
+        // widthFactor: 0.5,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             const Text(
               'Welcome to the game of life',
               style: TextStyle(fontFamily: 'Noto Sans Mono'),
             ),
+
+            TextField(
+              controller: _heightInputController,
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(labelText: 'Game field height'),
+            ),
+            TextField(
+              controller: _widthInputController,
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(labelText: 'Game field width'),
+            ),
+            TextField(
+              controller: _aliveStrInputController,
+              decoration: const InputDecoration(
+                  labelText: 'String to represent alive cells'),
+            ),
+            TextField(
+              controller: _deadStrInputController,
+              decoration: const InputDecoration(
+                  labelText: 'String to represent dead cells'),
+            ),
+            TextField(
+              controller: _timeoutInputController,
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(
+                  labelText: 'Wait time between generations in milliseconds'),
+            ),
+            // Row(
+            //   children: <Widget>[
+            //     Container(
+            //       width: 200,
+            //       child: TextField(
+            //         controller: _heightInputController,
+            //         keyboardType: TextInputType.number,
+            //         decoration:
+            //             const InputDecoration(labelText: 'Game field height'),
+            //       ),
+            //     ),
+            //     Container(
+            //       width: 200,
+            //       child: TextField(
+            //         controller: _widthInputController,
+            //         keyboardType: TextInputType.number,
+            //         decoration:
+            //             const InputDecoration(labelText: 'Game field width'),
+            //       ),
+            //     )
+            //   ],
+            // ),
+            // Row(
+            //   children: <Widget>[
+            //     TextField(
+            //       controller: _aliveStrInputController,
+            //       decoration: const InputDecoration(
+            //           labelText: 'String to represent alive cells'),
+            //     ),
+            //     TextField(
+            //       controller: _deadStrInputController,
+            //       decoration: const InputDecoration(
+            //           labelText: 'String to represent dead cells'),
+            //     ),
+            //   ],
+            // ),
+            // Row(
+            //   children: <Widget>[
+            //     TextField(
+            //       controller: _timeoutInputController,
+            //       keyboardType: TextInputType.number,
+            //       decoration: const InputDecoration(
+            //           labelText:
+            //               'Wait time between generations in milliseconds'),
+            //     ),
+            //   ],
+            // ),
             TextButton(
                 onPressed: onStartGameBtnPressed,
                 child: const Text('Start game')),

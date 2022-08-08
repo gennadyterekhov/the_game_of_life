@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:the_game_of_life/page/start_menu_page.dart';
-import 'page/game_page.dart';
-import '../the_game_of_life/game.dart';
 
 const title = 'The Game of Life';
 
@@ -19,8 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: StartMenuPage(title: title),
-      // home: const GamePage(title: title),
+      home: const StartMenuPage(title: title),
     );
   }
 }
