@@ -4,7 +4,7 @@ import 'package:the_game_of_life/page/start_menu_page.dart';
 const title = 'The Game of Life';
 
 void main(List<String> args) {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
