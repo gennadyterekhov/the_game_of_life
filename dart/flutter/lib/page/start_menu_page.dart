@@ -124,12 +124,12 @@ class _StartMenuPageState extends State<StartMenuPage> {
                 'Welcome to the game of life',
                 style: TextStyle(fontFamily: 'Noto Sans Mono'),
               ),
-              Text(
-                'height: ${MediaQuery.of(context).size.height}',
-              ),
-              Text(
-                'width: ${MediaQuery.of(context).size.width}',
-              ),
+              // Text(
+              //   'height: ${MediaQuery.of(context).size.height}',
+              // ),
+              // Text(
+              //   'width: ${MediaQuery.of(context).size.width}',
+              // ),
               TextField(
                 controller: _heightInputController,
                 keyboardType: TextInputType.number,
