@@ -1,6 +1,0 @@
-package com.example.the_game_of_life
-
-import io.flutter.embedding.android.FlutterActivity
-
-class MainActivity: FlutterActivity() {
-}
